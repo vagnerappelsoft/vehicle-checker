@@ -4,7 +4,7 @@ import { VehicleSelector } from '@/components/VehicleSelector';
 import { VehicleChecklist } from '@/components/VehicleChecklist';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus } from 'lucide-react';
+import { Plus, ArrowLeft } from 'lucide-react';
 
 interface Vehicle {
   plate: string;
@@ -50,15 +50,48 @@ const Index = () => {
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
   const [isCreating, setIsCreating] = useState(false);
 
-  if (isCreating) {
-    return <VehicleSelector onSelect={(vehicle) => {
-      setSelectedVehicle(vehicle);
+  const handleBack = () => {
+    if (selectedVehicle) {
+      setSelectedVehicle(null);
+    }
+    if (isCreating) {
       setIsCreating(false);
-    }} />;
+    }
+  };
+
+  if (isCreating) {
+    return (
+      <div className="space-y-6">
+        <Button
+          variant="ghost"
+          onClick={handleBack}
+          className="mb-4"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Voltar
+        </Button>
+        <VehicleSelector onSelect={(vehicle) => {
+          setSelectedVehicle(vehicle);
+          setIsCreating(false);
+        }} />
+      </div>
+    );
   }
 
   if (selectedVehicle) {
-    return <VehicleChecklist vehicleInfo={selectedVehicle} />;
+    return (
+      <div className="space-y-6">
+        <Button
+          variant="ghost"
+          onClick={handleBack}
+          className="mb-4"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Voltar
+        </Button>
+        <VehicleChecklist vehicleInfo={selectedVehicle} />
+      </div>
+    );
   }
 
   return (
